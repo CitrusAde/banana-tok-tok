@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-    <title>바나나 톡톡 (Banana Tok Tok) - 쌈뽕한 네온 에디션</title>
+    <title>바나나 톡톡 (Banana Tok Tok)</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Jua&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@400;700&family=Jua&display=swap" rel="stylesheet">
 
     <style>
         html, body {
@@ -22,7 +22,7 @@
         body {
             margin: 0;
             padding: 0;
-            background: #0b0f19; /* 깊고 트렌디한 다크 블루 블랙 */
+            background: #2c3e50;
             font-family: 'Jua', sans-serif;
             display: flex;
             justify-content: center;
@@ -33,26 +33,25 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* 9:16 모바일 꽉 찬 화면 & 쌈뽕한 네온 사이버 해변 배경 */
+        /* 9:16 모바일 세로형 화면 최적화 & 예쁜 2D 캐주얼 해변 배경 */
         #game-container {
             position: relative;
             width: 100vw;
             height: 100vh;
             max-width: 450px;
             max-height: 850px;
-            /* 사이버 펑크 스타일의 강렬한 네온 그라데이션 바다와 석양 연출 */
+            /* 푸른 하늘, 투명한 에메랄드 바다, 부드러운 모래사장 레이아웃 */
             background: linear-gradient(to bottom, 
-                #1f1c2c 0%, #928dab 40%,    /* 어두운 새벽 밤하늘 */
-                #ff007f 40%, #ff5e62 65%,   /* 강렬한 핫핑크 석양 */
-                #ff9966 65%, #ff5e62 80%,   /* 불타는 주황빛 네온 바다 */
-                #0f2027 80%, #203a43 100%   /* 차가운 다크 크롬 해변 */
+                #7dd3fc 0%, #7dd3fc 45%,   /* 화창한 하늘 */
+                #22d3ee 45%, #0891b2 65%,  /* 에메랄드 빛 맑은 바다 */
+                #fef08a 65%, #facc15 100%  /* 따뜻한 노란 모래사장 */
             );
-            box-shadow: 0 20px 60px rgba(255, 0, 127, 0.3);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 20px 40px 20px;
+            padding: 40px 20px 30px 20px;
             box-sizing: border-box;
             overflow: hidden;
         }
@@ -60,85 +59,96 @@
         @media (min-width: 450px) {
             #game-container {
                 height: 177.78vw;
-                border: 4px solid #ff007f; /* 네온 핑크 테두리 */
-                border-radius: 32px;
-                box-shadow: 0 0 30px #ff007f, inset 0 0 20px rgba(255,0,127,0.5);
+                border: 8px solid #fff;
+                border-radius: 24px;
             }
         }
 
-        /* 사이버 야자수 실루엣 장식 */
-        #game-container::before { content: '🌴'; position: absolute; font-size: 5.5rem; bottom: 23%; left: -15px; opacity: 0.3; filter: drop-shadow(0 0 10px #00ffff); pointer-events: none; }
-        #game-container::after { content: '🌴'; position: absolute; font-size: 6.5rem; bottom: 19%; right: -25px; opacity: 0.3; filter: drop-shadow(0 0 10px #00ffff); transform: scaleX(-1); pointer-events: none; }
+        /* ☁️ 배경 데코레이션 1: 흘러가는 귀여운 2D 구름 효과 */
+        .bg-cloud {
+            position: absolute;
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.8);
+            top: 15%;
+            animation: floatCloud 15s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .cloud-2 { top: 28%; animation-duration: 22s; animation-delay: -5s; font-size: 2.2rem; opacity: 0.6; }
 
+        /* 🌊 배경 데코레이션 2: 바다와 백사장 경계선의 일렁이는 하얀 거품 파도 */
+        #game-container::before {
+            content: '';
+            position: absolute;
+            top: 64.5%; left: 0; width: 200%; height: 15px;
+            background: radial-gradient(circle at 50% 100%, transparent 10px, #fff 11px);
+            background-size: 40px 20px;
+            opacity: 0.5;
+            animation: waveMotion 4s linear infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* 🌴 배경 데코레이션 3: 귀여운 야자수 이모지 실루엣 */
+        .bg-palm {
+            position: absolute;
+            font-size: 5.5rem;
+            bottom: 25%;
+            left: -15px;
+            opacity: 0.8;
+            filter: drop-shadow(0 4px 0px rgba(0,0,0,0.1));
+            pointer-events: none;
+            z-index: 1;
+        }
+        .palm-right { left: auto; right: -25px; font-size: 6.5rem; bottom: 22%; transform: scaleX(-1); }
+
+        /* 상단 타이틀 & 스코어 UI (깔끔하고 아기자기한 오리지널 스타일 복구) */
         #header { text-align: center; z-index: 2; pointer-events: auto; }
-        
-        /* 쌈뽕함의 정점: Black Han Sans 폰트 + 강렬한 듀얼 네온 텍스트 */
         h1 {
-            font-family: 'Black Han Sans', sans-serif;
-            color: #fff;
-            font-size: 3.8rem;
-            margin: 0 0 10px 0;
-            letter-spacing: -2px;
-            text-shadow: 
-                0 0 10px #ff007f,
-                0 0 20px #ff007f,
-                0 0 40px #ff007f;
-            animation: neonGlow 1.5s infinite alternate;
+            font-family: 'Jua', sans-serif;
+            color: #ffeb3b;
+            font-size: 3.4rem;
+            margin: 0 0 5px 0;
+            font-weight: normal;
+            letter-spacing: 0px;
+            text-shadow: 2px 3px 0px #e65100, 4px 6px 10px rgba(0,0,0,0.15);
         }
-
-        /* 메카닉 일렉트릭 스타일의 상단 정보 패널 */
         #info-panel {
-            background: rgba(11, 15, 25, 0.85);
-            border: 3px solid #00ffff;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 8px 25px;
-            border-radius: 16px;
+            background: #ffffff;
+            border: 4px solid #ff9800;
+            padding: 6px 20px;
+            border-radius: 50px;
             font-size: 1.2rem;
-            color: #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            color: #5d4037;
+            box-shadow: 0 6px 0px rgba(0,0,0,0.1);
             display: inline-block;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
-        #touch-left { 
-            color: #ff007f; 
-            font-size: 1.5rem; 
-            font-weight: bold;
-            text-shadow: 0 0 10px #ff007f;
-        }
+        #touch-left { color: #e91e63; font-size: 1.4rem; }
 
-        /* 사이버 펑크 네온 버튼 스타일 */
+        /* 도감 열기 버튼 */
         #book-open-btn {
             font-family: 'Jua', sans-serif;
-            background: transparent;
-            color: #ff007f;
-            border: 2px solid #ff007f;
-            border-radius: 12px;
-            padding: 8px 24px;
+            background: #ff5722;
+            color: white;
+            border: 2px solid #fff;
+            border-radius: 20px;
+            padding: 8px 22px;
             font-size: 1.1rem;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+            box-shadow: 0 4px 0px #d84315;
             display: inline-block;
-            transition: all 0.2s;
-        }
-        #book-open-btn:active {
-            background: #ff007f;
-            color: #fff;
-            box-shadow: 0 0 20px #ff007f;
-            transform: scale(0.95);
         }
 
-        /* 바나나 메인 스테이지 홀로그램 후광 레이어 */
+        /* 메인 캐릭터(바나나) 스테이지 */
         #banana-stage {
-            width: 270px;
-            height: 270px;
+            width: 250px;
+            height: 250px;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1;
-            /* 바나나 뒤에 쌈뽕한 후광 오라(Aura) 배치 */
-            background: radial-gradient(circle, rgba(0,255,255,0.2) 0%, rgba(0,0,0,0) 70%);
-            filter: drop-shadow(0px 0px 15px rgba(0,255,255,0.3));
+            z-index: 2;
+            filter: drop-shadow(0px 10px 0px rgba(0,0,0,0.12));
             pointer-events: none;
             transition: transform 0.05s ease-out;
         }
@@ -151,49 +161,30 @@
             background-position: 0px 0px;
         }
 
-        #footer-text { 
-            font-family: 'Black Han Sans', sans-serif; 
-            font-size: 1.4rem; 
-            height: 20px; 
-            z-index: 2; 
-            color: #00ffff; 
-            letter-spacing: 2px;
-            text-shadow: 0 0 8px #00ffff;
-            pointer-events: none; 
-        }
+        #footer-text { font-family: 'Jua', sans-serif; font-size: 1.3rem; height: 20px; z-index: 2; color: #795548; pointer-events: none; }
 
-        /* 묵직하고 거대한 아케이드 오락기 스타일 버튼 */
+        /* 동글통통한 캐주얼 버튼 스타일 복구 */
         .casual-btn {
-            font-family: 'Black Han Sans', sans-serif;
-            padding: 16px 50px;
-            font-size: 1.8rem;
+            font-family: 'Jua', sans-serif;
+            padding: 14px 45px;
+            font-size: 1.6rem;
             color: white;
-            border: none;
-            border-radius: 16px;
+            border: 4px solid #fff;
+            border-radius: 50px;
             cursor: pointer;
-            letter-spacing: 1px;
+            box-shadow: 0 8px 0px #388e3c, 0 15px 10px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
             pointer-events: auto;
-            transition: transform 0.1s;
         }
-        .casual-btn:active { transform: scale(0.95); }
-        
-        .btn-green { 
-            background: linear-gradient(135deg, #00ff87 0%, #60efff 100%); 
-            color: #0b0f19;
-            box-shadow: 0 0 25px rgba(0, 255, 135, 0.6);
-        }
-        .btn-orange { 
-            background: linear-gradient(135deg, #ff007f 0%, #ff5e62 100%); 
-            box-shadow: 0 0 25px rgba(255, 0, 127, 0.6);
-        }
+        .btn-green { background: #4caf50; box-shadow: 0 8px 0px #2e7d32; }
+        .btn-orange { background: #ff9800; box-shadow: 0 8px 0px #ef6c00; }
 
-        /* 오버레이 화면 전반을 힙한 글래스모피즘(Glassmorphism)으로 체인지 */
         .overlay-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 15, 25, 0.75);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -203,71 +194,51 @@
         }
 
         .start-title {
-            font-family: 'Black Han Sans', sans-serif;
-            font-size: 4.8rem;
-            color: #fff;
+            font-family: 'Jua', sans-serif;
+            font-size: 4.2rem;
+            color: #fffde7;
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             line-height: 1.1;
-            letter-spacing: -2px;
-            text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
-            animation: neonGlowCyan 1.5s infinite alternate;
+            text-shadow: 3px 4px 0px #d84315, 6px 10px 15px rgba(0,0,0,0.2);
         }
 
         #clear-screen { display: none; }
-        #clear-screen h2 { 
-            font-family: 'Black Han Sans', sans-serif; 
-            font-size: 4rem; 
-            color: #fff; 
-            text-shadow: 0 0 20px #00ff87; 
-            margin-bottom: 15px; 
-        }
-        
-        /* 스케일 보드를 감싸는 하이테크 리워드 박스 */
+        #clear-screen h2 { font-family: 'Jua', sans-serif; font-size: 3.5rem; color: #ffeb3b; text-shadow: 2px 3px 0px #e91e63; margin-bottom: 5px; }
         #reward-msg {
             font-family: 'Jua', sans-serif;
-            color: #fff;
+            color: #fffde7;
             font-size: 1.4rem;
             text-align: center;
-            margin-bottom: 35px;
-            background: rgba(255, 0, 127, 0.15);
-            padding: 12px 24px;
-            border-radius: 16px;
-            border: 2px solid #ff007f;
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #ff9800, #e91e63);
+            padding: 10px 20px;
+            border-radius: 24px;
+            border: 3px solid #fff;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
 
-        /* 도감 창 다크 아케이드 테마 */
-        #book-screen { display: none; background: rgba(11, 15, 25, 0.96); padding: 25px; box-sizing: border-box; }
-        .book-title { 
-            font-family: 'Black Han Sans', sans-serif; 
-            font-size: 2.8rem; 
-            color: #fff; 
-            margin-bottom: 20px; 
-            text-shadow: 0 0 15px #ff007f; 
-        }
+        #book-screen { display: none; background: rgba(44, 62, 80, 0.95); padding: 20px; box-sizing: border-box; }
+        .book-title { font-family: 'Jua', sans-serif; font-size: 2.5rem; color: #ffeb3b; margin-bottom: 15px; text-shadow: 2px 2px 0px #e65100; }
         
-        /* 4x4 네온 슬롯 그리드 */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 8px;
             width: 100%;
             max-width: 380px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 15px;
-            border-radius: 20px;
-            border: 2px solid #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 16px;
+            border: 3px solid #ff9800;
             box-sizing: border-box;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        /* 힙한 블랙 크롬 카드 레이아웃 */
         .skin-item {
-            background: #161d2f;
-            border: 2px solid #2c374e;
-            border-radius: 14px;
+            background: #fff;
+            border: 3px solid #bdc3c7;
+            border-radius: 12px;
             aspect-ratio: 1;
             display: flex;
             flex-direction: column;
@@ -275,36 +246,31 @@
             align-items: center;
             cursor: pointer;
             position: relative;
-            transition: all 0.2s;
+            box-shadow: 0 4px 0px #bdc3c7;
+            overflow: hidden;
         }
-        /* 장착(활성화) 시 시안(민트) 네온 빛 발산 */
-        .skin-item.active { 
-            border-color: #00ffff; 
-            background: #1a2f3b; 
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6); 
-        }
+        .skin-item.active { border-color: #ff9800; background: #fffde7; box-shadow: 0 4px 0px #e65100; }
         
-        .skin-item.locked { background: #0f131c; border-color: #1e2535; cursor: not-allowed; }
-        .skin-item.locked .skin-preview { filter: brightness(0.2) grayscale(1); }
-        .skin-item.locked::after { content: '🔒'; position: absolute; font-size: 1.1rem; top: 25%; filter: drop-shadow(0 0 5px #fff); }
+        .skin-item.locked { background: #95a5a6; border-color: #7f8c8d; box-shadow: 0 4px 0px #7f8c8d; cursor: not-allowed; }
+        .skin-item.locked .skin-preview { filter: brightness(0.3) contrast(0.5); }
+        .skin-item.locked::after { content: '🔒'; position: absolute; font-size: 1.2rem; top: 25%; }
 
-        .skin-item.coming-soon { background: #090b10; border-color: #ff007f; cursor: not-allowed; opacity: 0.6; }
+        .skin-item.coming-soon { background: #555; border-color: #333; box-shadow: 0 4px 0px #333; cursor: not-allowed; }
         .skin-item.coming-soon .skin-preview { display: none; }
-        .skin-item.coming-soon::after { content: '❌'; position: absolute; font-size: 1.1rem; top: 22%; }
-        .skin-item.coming-soon .skin-name { color: #ff007f !important; font-size: 0.95rem; }
+        .skin-item.coming-soon::after { content: '❌'; position: absolute; font-size: 1.2rem; top: 20%; }
+        .skin-item.coming-soon .skin-name { color: #aaa !important; font-size: 1rem; }
 
         .skin-preview { width: 45px; height: 45px; background-size: 180px 180px; background-repeat: no-repeat; background-position: 0px 0px; }
-        .skin-name { font-family: 'Dongle', sans-serif; font-size: 1.1rem; font-weight: bold; line-height: 0.8; color: #8fa0c4; margin-top: 5px; }
-        .skin-item.active .skin-name { color: #00ffff; }
+        .skin-name { font-family: 'Dongle', sans-serif; font-size: 1.1rem; font-weight: bold; line-height: 0.8; color: #5d4037; margin-top: 4px; }
 
-        /* 쌈뽕한 무한 네온 애니메이션 광원 정의 */
-        @keyframes neonGlow {
-            from { text-shadow: 0 0 5px #ff007f, 0 0 10px #ff007f, 0 0 20px #ff007f; }
-            to { text-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 40px #ff007f, 0 0 60px #ff007f; }
+        /* 🌊 배경 애니메이션 효과 정의 */
+        @keyframes floatCloud {
+            0% { left: -100px; }
+            100% { left: 450px; }
         }
-        @keyframes neonGlowCyan {
-            from { text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff; }
-            to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff; }
+        @keyframes waveMotion {
+            0% { transform: translateX(0) scaleY(1); }
+            100% { transform: translateX(-20px) scaleY(1.1); }
         }
     </style>
 </head>
@@ -312,34 +278,40 @@
 
     <div id="game-container" ontouchstart="handleGlobalTouch(event)" onmousedown="handleGlobalTouch(event)">
         
+        <div class="bg-cloud">☁️</div>
+        <div class="bg-cloud cloud-2">☁️</div>
+
+        <div class="bg-palm">🌴</div>
+        <div class="bg-palm palm-right">🌴</div>
+
         <div id="start-screen" class="overlay-screen">
-            <div class="start-title">바나나<br>톡톡</div>
-            <button class="casual-btn btn-green" ontouchstart="startGame(event)" onclick="startGame(event)">GAME START</button>
+            <div class="start-title">바나나<br>톡톡!</div>
+            <button class="casual-btn btn-green" ontouchstart="startGame(event)" onclick="startGame(event)">게임 시작</button>
         </div>
 
         <div id="header">
             <h1>바나나 톡톡</h1>
-            <div id="info-panel">NEXT STEP : <span id="touch-left">2</span> TOK!</div>
+            <div id="info-panel">다음 변신까지 <span id="touch-left">2</span>톡!</div>
             <br>
-            <button id="book-open-btn" ontouchstart="openBook(event)" onclick="openBook(event)">📖 BARANANA BOOK</button>
+            <button id="book-open-btn" ontouchstart="openBook(event)" onclick="openBook(event)">📖 바나나 도감</button>
         </div>
 
         <div id="banana-stage">
             <div id="banana-view"></div>
         </div>
 
-        <div id="footer-text">ANYWHERE TAP</div>
+        <div id="footer-text">아무 데나 톡톡!</div>
 
         <div id="clear-screen" class="overlay-screen">
-            <h2>STAGE CLEAR 🎉</h2>
+            <h2>성공! 🎉</h2>
             <div id="reward-msg">도감 획득!</div>
-            <button class="casual-btn btn-orange" ontouchstart="resetGame(event)" onclick="resetGame(event)">PLAY AGAIN</button>
+            <button class="casual-btn btn-orange" ontouchstart="resetGame(event)" onclick="resetGame(event)">다시 하기</button>
         </div>
 
         <div id="book-screen" class="overlay-screen">
-            <div class="book-title">BANANA BOOK 📖</div>
+            <div class="book-title">바나나 도감 📖</div>
             <div class="grid-container" id="skin-grid"></div>
-            <button class="casual-btn btn-green" style="font-size: 1.3rem; padding: 12px 40px; border-radius: 12px;" ontouchstart="closeBook(event)" onclick="closeBook(event)">CLOSE</button>
+            <button class="casual-btn btn-green" style="font-size: 1.3rem; padding: 8px 30px;" ontouchstart="closeBook(event)" onclick="closeBook(event)">닫기</button>
         </div>
     </div>
 
@@ -351,7 +323,7 @@
         let currentSkinNumber = 1;
         let isProcessingTouch = false;
 
-        // 여기에 변환된 Base64 데이터를 채워 넣으시면 완벽하게 1개 파일로 압축 공유됩니다!
+        // 💡 여기에 변환한 Base64 코드를 순서대로 집어넣으시면 됩니다!
         const skinImages = {
             1: 'banana_4x4_1.png',
             2: 'banana_4x4_2.png',
@@ -394,7 +366,7 @@
                     
                     const name = document.createElement('div');
                     name.className = 'skin-name';
-                    name.innerText = `NEXT SKIN`;
+                    name.innerText = `업데이트 예정`;
                     item.appendChild(name);
                 } else {
                     if (unlockedSkins[i]) {
@@ -413,7 +385,7 @@
                     
                     const name = document.createElement('div');
                     name.className = 'skin-name';
-                    name.innerText = unlockedSkins[i] ? `SKIN ${i}` : `???`;
+                    name.innerText = unlockedSkins[i] ? `스킨 ${i}` : `???`;
 
                     item.appendChild(preview);
                     item.appendChild(name);
@@ -456,8 +428,7 @@
             isProcessingTouch = true;
             setTimeout(() => { isProcessingTouch = false; }, 50);
 
-            // 쫀득한 연타 팝 홉 모션 피드백
-            document.getElementById('banana-stage').style.transform = 'scale(0.82)';
+            document.getElementById('banana-stage').style.transform = 'scale(0.85)';
             setTimeout(() => { document.getElementById('banana-stage').style.transform = 'scale(1)'; }, 60);
 
             if (currentFrame > maxFrames) return;
@@ -491,7 +462,7 @@
                 const randomIndex = Math.floor(Math.random() * lockedList.length);
                 const newlyUnlockedSkin = lockedList[randomIndex];
                 unlockedSkins[newlyUnlockedSkin] = true;
-                rewardMsg.innerHTML = `NEW SKIN UNLOCKED!<br><span style="color:#00ffff">[스킨 ${newlyUnlockedSkin}]</span>이 열렸어용! 🎉`;
+                rewardMsg.innerText = `도감 획득! [스킨 ${newlyUnlockedSkin}]이 열렸어용! 🎉`;
             } else {
                 rewardMsg.innerText = `현재 오픈된 모든 스킨을 수집했습니다! 🏆`;
             }
@@ -507,7 +478,6 @@
             updateBananaSprite();
         }
 
-        // 런타임 이니셜라이즈
         bananaView.style.backgroundImage = `url('${getSkinImageUrl(1)}')`;
         initBook();
         updateBananaSprite();
