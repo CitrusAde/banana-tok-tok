@@ -40,7 +40,6 @@
             height: 100vh;
             max-width: 450px;
             max-height: 850px;
-            /* 푸른 하늘, 투명한 에메랄드 바다, 부드러운 모래사장 레이아웃 */
             background: linear-gradient(to bottom, 
                 #7dd3fc 0%, #7dd3fc 45%,   /* 화창한 하늘 */
                 #22d3ee 45%, #0891b2 65%,  /* 에메랄드 빛 맑은 바다 */
@@ -76,7 +75,7 @@
         }
         .cloud-2 { top: 28%; animation-duration: 22s; animation-delay: -5s; font-size: 2.2rem; opacity: 0.6; }
 
-        /* 🌊 배경 데코레이션 2: 바다와 백사장 경계선의 일렁이는 하얀 거품 파도 */
+        /* 🌊 배경 데코레이션 2: 백사장 거품 파도 */
         #game-container::before {
             content: '';
             position: absolute;
@@ -89,7 +88,7 @@
             z-index: 1;
         }
 
-        /* 🌴 배경 데코레이션 3: 귀여운 야자수 이모지 실루엣 */
+        /* 🌴 배경 데코레이션 3: 야자수 */
         .bg-palm {
             position: absolute;
             font-size: 5.5rem;
@@ -102,7 +101,7 @@
         }
         .palm-right { left: auto; right: -25px; font-size: 6.5rem; bottom: 22%; transform: scaleX(-1); }
 
-        /* 상단 타이틀 & 스코어 UI (깔끔하고 아기자기한 오리지널 스타일 복구) */
+        /* 상단 타이틀 & 스코어 UI */
         #header { text-align: center; z-index: 2; pointer-events: auto; }
         h1 {
             font-family: 'Jua', sans-serif;
@@ -163,7 +162,34 @@
 
         #footer-text { font-family: 'Jua', sans-serif; font-size: 1.3rem; height: 20px; z-index: 2; color: #795548; pointer-events: none; }
 
-        /* 동글통통한 캐주얼 버튼 스타일 복구 */
+        /* 콤보 카운트 표시 UI */
+        #combo-panel {
+            position: absolute;
+            top: 48%;
+            font-size: 2rem;
+            color: #ffeb3b;
+            text-shadow: 2px 2px 0px #e65100;
+            pointer-events: none;
+            z-index: 3;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.1s, transform 0.1s;
+        }
+        #combo-panel.active {
+            opacity: 1;
+            transform: scale(1) rotate(-5deg);
+        }
+
+        /* ✨ 파티클(별 모양) 스타일 */
+        .particle {
+            position: absolute;
+            font-size: 1.5rem;
+            pointer-events: none;
+            z-index: 99;
+            animation: explode 0.6s ease-out forwards;
+        }
+
+        /* 통통한 캐주얼 버튼 스타일 */
         .casual-btn {
             font-family: 'Jua', sans-serif;
             padding: 14px 45px;
@@ -263,7 +289,7 @@
         .skin-preview { width: 45px; height: 45px; background-size: 180px 180px; background-repeat: no-repeat; background-position: 0px 0px; }
         .skin-name { font-family: 'Dongle', sans-serif; font-size: 1.1rem; font-weight: bold; line-height: 0.8; color: #5d4037; margin-top: 4px; }
 
-        /* 🌊 배경 애니메이션 효과 정의 */
+        /* 🌊 배경 및 파티클 애니메이션 */
         @keyframes floatCloud {
             0% { left: -100px; }
             100% { left: 450px; }
@@ -271,6 +297,17 @@
         @keyframes waveMotion {
             0% { transform: translateX(0) scaleY(1); }
             100% { transform: translateX(-20px) scaleY(1.1); }
+        }
+        /* 파티클이 사방으로 퍼지며 서서히 작아지고 사라지는 효과 */
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--mx), var(--my)) scale(0.2);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -283,6 +320,8 @@
 
         <div class="bg-palm">🌴</div>
         <div class="bg-palm palm-right">🌴</div>
+
+        <div id="combo-panel">0 COMBO!</div>
 
         <div id="start-screen" class="overlay-screen">
             <div class="start-title">바나나<br>톡톡!</div>
@@ -323,7 +362,11 @@
         let currentSkinNumber = 1;
         let isProcessingTouch = false;
 
-        // 💡 여기에 변환한 Base64 코드를 순서대로 집어넣으시면 됩니다!
+        // 콤보 및 파티클 변수
+        let comboCount = 0;
+        let lastTouchTime = 0;
+        const comboTimeout = 800; // 0.8초 이내에 다시 누르면 연타(콤보)로 인정
+
         const skinImages = {
             1: 'banana_4x4_1.png',
             2: 'banana_4x4_2.png',
@@ -346,6 +389,7 @@
             unlockedSkins[i] = (i === 1);
         }
 
+        const gameContainer = document.getElementById('game-container');
         const bananaView = document.getElementById('banana-view');
         const touchLeftText = document.getElementById('touch-left');
         const startScreen = document.getElementById('start-screen');
@@ -353,6 +397,7 @@
         const bookScreen = document.getElementById('book-screen');
         const skinGrid = document.getElementById('skin-grid');
         const rewardMsg = document.getElementById('reward-msg');
+        const comboPanel = document.getElementById('combo-panel');
 
         function initBook() {
             skinGrid.innerHTML = '';
@@ -420,14 +465,88 @@
         function openBook(event) { event.stopPropagation(); event.preventDefault(); bookScreen.style.display = 'flex'; }
         function closeBook(event) { event.stopPropagation(); event.preventDefault(); bookScreen.style.display = 'none'; }
 
+        // ✨ 실시간 파티클 스폰 함수
+        function createParticles(x, y) {
+            // 콤보 수치에 비례해서 파티클 개수 증가 (기본 4개 ~ 최대 20개)
+            const baseAmount = 4;
+            const extraAmount = Math.min(Math.floor(comboCount / 2), 16);
+            const totalParticles = baseAmount + extraAmount;
+
+            const starEmojis = ['⭐', '✨', '🟡', '✨']; // 팡팡 터지는 노란 이펙트 분위기
+
+            for (let i = 0; i < totalParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.innerText = starEmojis[Math.floor(Math.random() * starEmojis.length)];
+                
+                // 터치 좌표 기준으로 파티클 초기 위치 세팅
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+
+                // 사방으로 튀어나갈 무작위 목적지 거리 계산 (CSS 변수로 전달)
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 60 + Math.random() * 80; // 콤보가 높아질수록 더 넓게 퍼지게 설정 가능
+                const mx = Math.cos(angle) * distance;
+                const my = Math.sin(angle) * distance;
+
+                particle.style.setProperty('--mx', `${mx}px`);
+                particle.style.setProperty('--my', `${my}px`);
+
+                gameContainer.appendChild(particle);
+
+                // 애니메이션이 끝나면 자동으로 DOM에서 삭제하여 최적화
+                particle.addEventListener('animationend', () => {
+                    particle.remove();
+                });
+            }
+        }
+
+        // 글로벌 통합 터치 연산 루프
         function handleGlobalTouch(event) {
             if (event.target.tagName === 'BUTTON' || event.target.closest('.skin-item') || (event.target.closest('#book-screen') && event.target === bookScreen)) return;
             if (startScreen.style.display !== 'none' || clearScreen.style.display === 'flex' || bookScreen.style.display === 'flex') return;
+
+            // 터치/클릭 좌표 구하기 (모바일/PC 혼용)
+            let touchX = 0;
+            let touchY = 0;
+            if (event.type === 'touchstart') {
+                touchX = event.touches[0].clientX;
+                touchY = event.touches[0].clientY;
+            } else {
+                touchX = event.clientX;
+                touchY = event.clientY;
+            }
+
+            // 상단 가로 영역 제한 내 보정 계산 (컨테이너 오프셋 차감)
+            const rect = gameContainer.getBoundingClientRect();
+            const relX = touchX - rect.left;
+            const relY = touchY - rect.top;
 
             if (isProcessingTouch) return;
             isProcessingTouch = true;
             setTimeout(() => { isProcessingTouch = false; }, 50);
 
+            // 콤보 시스템 작동 연산
+            const now = Date.now();
+            if (now - lastTouchTime <= comboTimeout) {
+                comboCount++; // 연타 시 콤보 증가
+            } else {
+                comboCount = 1; // 텀이 길어지면 콤보 1부터 초기화
+            }
+            lastTouchTime = now;
+
+            // 콤보 UI 피드백 연출 (3콤보 이상부터 화면에 강조 노출)
+            if (comboCount >= 3) {
+                comboPanel.innerText = `${comboCount} COMBO!🔥`;
+                comboPanel.className = 'active';
+            } else {
+                comboPanel.className = '';
+            }
+
+            // 💥 이펙트 생성 요청 (터치 좌표와 콤보 데이터 연동)
+            createParticles(relX, relY);
+
+            // 바나나 팝업 애니메이션 효과
             document.getElementById('banana-stage').style.transform = 'scale(0.85)';
             setTimeout(() => { document.getElementById('banana-stage').style.transform = 'scale(1)'; }, 60);
 
@@ -442,6 +561,7 @@
                     currentFrame = maxFrames;
                     updateBananaSprite();
                     handleRewardUnlock();
+                    comboPanel.className = ''; // 클리어 시 콤보 UI 숨김
                     setTimeout(() => { clearScreen.style.display = 'flex'; }, 300);
                     return;
                 }
@@ -472,12 +592,14 @@
         function resetGame(event) {
             event.stopPropagation();
             event.preventDefault();
-            currentFrame = 1; touchCount = 0;
+            currentFrame = 1; touchCount = 0; comboCount = 0;
             touchLeftText.innerText = touchesPerFrame;
             clearScreen.style.display = 'none';
+            comboPanel.className = '';
             updateBananaSprite();
         }
 
+        // 초기 바인딩
         bananaView.style.backgroundImage = `url('${getSkinImageUrl(1)}')`;
         initBook();
         updateBananaSprite();
