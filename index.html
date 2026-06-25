@@ -63,7 +63,7 @@
             }
         }
 
-        /* ☁️ 배경 데코레이션 1: 흘러가는 귀여운 2D 구름 효과 */
+        /* ☁️ 배경 데코레이션 */
         .bg-cloud {
             position: absolute;
             font-size: 3rem;
@@ -75,7 +75,7 @@
         }
         .cloud-2 { top: 28%; animation-duration: 22s; animation-delay: -5s; font-size: 2.2rem; opacity: 0.6; }
 
-        /* 🌊 배경 데코레이션 2: 백사장 거품 파도 */
+        /* 🌊 백사장 거품 파도 */
         #game-container::before {
             content: '';
             position: absolute;
@@ -88,7 +88,7 @@
             z-index: 1;
         }
 
-        /* 🌴 배경 데코레이션 3: 야자수 */
+        /* 🌴 야자수 */
         .bg-palm {
             position: absolute;
             font-size: 5.5rem;
@@ -101,7 +101,7 @@
         }
         .palm-right { left: auto; right: -25px; font-size: 6.5rem; bottom: 22%; transform: scaleX(-1); }
 
-        /* 상단 타이틀 & 스코어 UI */
+        /* 상단 UI */
         #header { text-align: center; z-index: 2; pointer-events: auto; }
         h1 {
             font-family: 'Jua', sans-serif;
@@ -125,7 +125,6 @@
         }
         #touch-left { color: #e91e63; font-size: 1.4rem; }
 
-        /* 도감 열기 버튼 */
         #book-open-btn {
             font-family: 'Jua', sans-serif;
             background: #ff5722;
@@ -139,7 +138,7 @@
             display: inline-block;
         }
 
-        /* 메인 캐릭터(바나나) 스테이지 */
+        /* 🎯 메인 바나나 스테이지 (크기 성장 애니메이션을 위한 트랜지션 추가) */
         #banana-stage {
             width: 250px;
             height: 250px;
@@ -149,7 +148,8 @@
             z-index: 2;
             filter: drop-shadow(0px 10px 0px rgba(0,0,0,0.12));
             pointer-events: none;
-            transition: transform 0.05s ease-out;
+            /* 기본 스케일 값은 스크립트에서 실시간 제어, 크기 변환 시 0.2초간 부드럽게 변함 */
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
         #banana-view {
@@ -162,7 +162,6 @@
 
         #footer-text { font-family: 'Jua', sans-serif; font-size: 1.3rem; height: 20px; z-index: 2; color: #795548; pointer-events: none; }
 
-        /* 콤보 카운트 표시 UI */
         #combo-panel {
             position: absolute;
             top: 48%;
@@ -175,12 +174,8 @@
             transform: scale(0.5);
             transition: opacity 0.1s, transform 0.1s;
         }
-        #combo-panel.active {
-            opacity: 1;
-            transform: scale(1) rotate(-5deg);
-        }
+        #combo-panel.active { opacity: 1; transform: scale(1) rotate(-5deg); }
 
-        /* ✨ 파티클(별 모양) 스타일 */
         .particle {
             position: absolute;
             font-size: 1.5rem;
@@ -189,7 +184,7 @@
             animation: explode 0.6s ease-out forwards;
         }
 
-        /* 통통한 캐주얼 버튼 스타일 */
+        /* 버튼 스타일 */
         .casual-btn {
             font-family: 'Jua', sans-serif;
             padding: 14px 45px;
@@ -229,8 +224,21 @@
             text-shadow: 3px 4px 0px #d84315, 6px 10px 15px rgba(0,0,0,0.2);
         }
 
+        /* 성공(클리어) 화면 내부 레이아웃 */
         #clear-screen { display: none; }
         #clear-screen h2 { font-family: 'Jua', sans-serif; font-size: 3.5rem; color: #ffeb3b; text-shadow: 2px 3px 0px #e91e63; margin-bottom: 5px; }
+        
+        /* 🍌 클리어창 전용 바나나 최종 진열대 스타일 */
+        #final-banana-showcase {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0px 8px 0px rgba(0,0,0,0.15));
+            background-size: 720px 720px; /* 결과창에 맞게 축소 (180px * 4 = 720px) */
+            background-repeat: no-repeat;
+            background-position: -540px -540px; /* 무조건 16번째 프레임 고정 고시 (마지막 행, 마지막 열) */
+        }
+
         #reward-msg {
             font-family: 'Jua', sans-serif;
             color: #fffde7;
@@ -289,26 +297,9 @@
         .skin-preview { width: 45px; height: 45px; background-size: 180px 180px; background-repeat: no-repeat; background-position: 0px 0px; }
         .skin-name { font-family: 'Dongle', sans-serif; font-size: 1.1rem; font-weight: bold; line-height: 0.8; color: #5d4037; margin-top: 4px; }
 
-        /* 🌊 배경 및 파티클 애니메이션 */
-        @keyframes floatCloud {
-            0% { left: -100px; }
-            100% { left: 450px; }
-        }
-        @keyframes waveMotion {
-            0% { transform: translateX(0) scaleY(1); }
-            100% { transform: translateX(-20px) scaleY(1.1); }
-        }
-        /* 파티클이 사방으로 퍼지며 서서히 작아지고 사라지는 효과 */
-        @keyframes explode {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--mx), var(--my)) scale(0.2);
-                opacity: 0;
-            }
-        }
+        @keyframes floatCloud { 0% { left: -100px; } 100% { left: 450px; } }
+        @keyframes waveMotion { 0% { transform: translateX(0) scaleY(1); } 100% { transform: translateX(-20px) scaleY(1.1); } }
+        @keyframes explode { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 100% { transform: translate(var(--mx), var(--my)) scale(0.2); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -323,11 +314,13 @@
 
         <div id="combo-panel">0 COMBO!</div>
 
+        <!-- 시작 화면 -->
         <div id="start-screen" class="overlay-screen">
             <div class="start-title">바나나<br>톡톡!</div>
             <button class="casual-btn btn-green" ontouchstart="startGame(event)" onclick="startGame(event)">게임 시작</button>
         </div>
 
+        <!-- 상단 UI -->
         <div id="header">
             <h1>바나나 톡톡</h1>
             <div id="info-panel">다음 변신까지 <span id="touch-left">2</span>톡!</div>
@@ -335,18 +328,23 @@
             <button id="book-open-btn" ontouchstart="openBook(event)" onclick="openBook(event)">📖 바나나 도감</button>
         </div>
 
+        <!-- 바나나 표시 영역 -->
         <div id="banana-stage">
             <div id="banana-view"></div>
         </div>
 
         <div id="footer-text">아무 데나 톡톡!</div>
 
+        <!-- 게임 클리어 화면 -->
         <div id="clear-screen" class="overlay-screen">
             <h2>성공! 🎉</h2>
+            <!-- 🍌 완성된 마지막 이미지가 들어갈 공간 -->
+            <div id="final-banana-showcase"></div>
             <div id="reward-msg">도감 획득!</div>
             <button class="casual-btn btn-orange" ontouchstart="resetGame(event)" onclick="resetGame(event)">다시 하기</button>
         </div>
 
+        <!-- 바나나 도감 오버레이 화면 -->
         <div id="book-screen" class="overlay-screen">
             <div class="book-title">바나나 도감 📖</div>
             <div class="grid-container" id="skin-grid"></div>
@@ -362,10 +360,9 @@
         let currentSkinNumber = 1;
         let isProcessingTouch = false;
 
-        // 콤보 및 파티클 변수
         let comboCount = 0;
         let lastTouchTime = 0;
-        const comboTimeout = 800; // 0.8초 이내에 다시 누르면 연타(콤보)로 인정
+        const comboTimeout = 800;
 
         const skinImages = {
             1: 'banana_4x4_1.png',
@@ -390,6 +387,7 @@
         }
 
         const gameContainer = document.getElementById('game-container');
+        const bananaStage = document.getElementById('banana-stage');
         const bananaView = document.getElementById('banana-view');
         const touchLeftText = document.getElementById('touch-left');
         const startScreen = document.getElementById('start-screen');
@@ -398,6 +396,7 @@
         const skinGrid = document.getElementById('skin-grid');
         const rewardMsg = document.getElementById('reward-msg');
         const comboPanel = document.getElementById('combo-panel');
+        const finalBananaShowcase = document.getElementById('final-banana-showcase');
 
         function initBook() {
             skinGrid.innerHTML = '';
@@ -408,7 +407,6 @@
                     item.className = `skin-item coming-soon`;
                     item.setAttribute('ontouchstart', `event.stopPropagation();`);
                     item.setAttribute('onclick', `event.stopPropagation();`);
-                    
                     const name = document.createElement('div');
                     name.className = 'skin-name';
                     name.innerText = `업데이트 예정`;
@@ -447,13 +445,24 @@
             currentSkinNumber = skinNum;
             bananaView.style.backgroundImage = `url('${getSkinImageUrl(skinNum)}')`;
             initBook();
+            updateBananaSprite(); // 스킨 바꿨을 때 크기 수치도 재정렬하기 위함
         }
 
+        // 📈 프레임에 맞춰 실시간으로 크기 비율(70% -> 120%)을 연산해 처리하는 스크립트
         function updateBananaSprite() {
             const idx = currentFrame - 1;
             const col = idx % 4;
             const row = Math.floor(idx / 4);
             bananaView.style.backgroundPosition = `${-(col * 250)}px ${-(row * 250)}px`;
+
+            // 선형 보간 계산: 1프레임일 때 0.7, 16프레임일 때 1.2
+            // 공식: 최소값 + (현재단계 / 총단계) * 범위
+            const progress = idx / (maxFrames - 1); // 0.0 ~ 1.0
+            const currentScale = 0.7 + (progress * 0.5); // 0.7 ~ 1.2
+
+            // 해당 스케일을 스테이지 기본 스타일에 박아넣음
+            bananaStage.style.transform = `scale(${currentScale})`;
+            bananaStage.dataset.baseScale = currentScale; // 터치 임시 액션용 캐시 데이터 저장
         }
 
         function startGame(event) { 
@@ -465,50 +474,37 @@
         function openBook(event) { event.stopPropagation(); event.preventDefault(); bookScreen.style.display = 'flex'; }
         function closeBook(event) { event.stopPropagation(); event.preventDefault(); bookScreen.style.display = 'none'; }
 
-        // ✨ 실시간 파티클 스폰 함수
         function createParticles(x, y) {
-            // 콤보 수치에 비례해서 파티클 개수 증가 (기본 4개 ~ 최대 20개)
             const baseAmount = 4;
             const extraAmount = Math.min(Math.floor(comboCount / 2), 16);
             const totalParticles = baseAmount + extraAmount;
-
-            const starEmojis = ['⭐', '✨', '🟡', '✨']; // 팡팡 터지는 노란 이펙트 분위기
+            const starEmojis = ['⭐', '✨', '🟡', '✨'];
 
             for (let i = 0; i < totalParticles; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.innerText = starEmojis[Math.floor(Math.random() * starEmojis.length)];
-                
-                // 터치 좌표 기준으로 파티클 초기 위치 세팅
                 particle.style.left = `${x}px`;
                 particle.style.top = `${y}px`;
 
-                // 사방으로 튀어나갈 무작위 목적지 거리 계산 (CSS 변수로 전달)
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 60 + Math.random() * 80; // 콤보가 높아질수록 더 넓게 퍼지게 설정 가능
+                const distance = 60 + Math.random() * 80;
                 const mx = Math.cos(angle) * distance;
                 const my = Math.sin(angle) * distance;
 
                 particle.style.setProperty('--mx', `${mx}px`);
                 particle.style.setProperty('--my', `${my}px`);
-
                 gameContainer.appendChild(particle);
 
-                // 애니메이션이 끝나면 자동으로 DOM에서 삭제하여 최적화
-                particle.addEventListener('animationend', () => {
-                    particle.remove();
-                });
+                particle.addEventListener('animationend', () => { particle.remove(); });
             }
         }
 
-        // 글로벌 통합 터치 연산 루프
         function handleGlobalTouch(event) {
             if (event.target.tagName === 'BUTTON' || event.target.closest('.skin-item') || (event.target.closest('#book-screen') && event.target === bookScreen)) return;
             if (startScreen.style.display !== 'none' || clearScreen.style.display === 'flex' || bookScreen.style.display === 'flex') return;
 
-            // 터치/클릭 좌표 구하기 (모바일/PC 혼용)
-            let touchX = 0;
-            let touchY = 0;
+            let touchX = 0, touchY = 0;
             if (event.type === 'touchstart') {
                 touchX = event.touches[0].clientX;
                 touchY = event.touches[0].clientY;
@@ -517,7 +513,6 @@
                 touchY = event.clientY;
             }
 
-            // 상단 가로 영역 제한 내 보정 계산 (컨테이너 오프셋 차감)
             const rect = gameContainer.getBoundingClientRect();
             const relX = touchX - rect.left;
             const relY = touchY - rect.top;
@@ -526,16 +521,10 @@
             isProcessingTouch = true;
             setTimeout(() => { isProcessingTouch = false; }, 50);
 
-            // 콤보 시스템 작동 연산
             const now = Date.now();
-            if (now - lastTouchTime <= comboTimeout) {
-                comboCount++; // 연타 시 콤보 증가
-            } else {
-                comboCount = 1; // 텀이 길어지면 콤보 1부터 초기화
-            }
+            if (now - lastTouchTime <= comboTimeout) { comboCount++; } else { comboCount = 1; }
             lastTouchTime = now;
 
-            // 콤보 UI 피드백 연출 (3콤보 이상부터 화면에 강조 노출)
             if (comboCount >= 3) {
                 comboPanel.innerText = `${comboCount} COMBO!🔥`;
                 comboPanel.className = 'active';
@@ -543,12 +532,14 @@
                 comboPanel.className = '';
             }
 
-            // 💥 이펙트 생성 요청 (터치 좌표와 콤보 데이터 연동)
             createParticles(relX, relY);
 
-            // 바나나 팝업 애니메이션 효과
-            document.getElementById('banana-stage').style.transform = 'scale(0.85)';
-            setTimeout(() => { document.getElementById('banana-stage').style.transform = 'scale(1)'; }, 60);
+            // 터치 액션 맛을 위해 현재 기본 스케일의 85% 수준으로 순간 수축 피드백
+            const baseScale = parseFloat(bananaStage.dataset.baseScale) || 1.0;
+            bananaStage.style.transform = `scale(${baseScale * 0.88})`;
+            setTimeout(() => { 
+                bananaStage.style.transform = `scale(${baseScale})`; 
+            }, 60);
 
             if (currentFrame > maxFrames) return;
             touchCount++;
@@ -561,7 +552,11 @@
                     currentFrame = maxFrames;
                     updateBananaSprite();
                     handleRewardUnlock();
-                    comboPanel.className = ''; // 클리어 시 콤보 UI 숨김
+                    comboPanel.className = '';
+                    
+                    // 🍌 성공 창 중앙 레이어에 선택되어 있던 스킨의 이미지 링크를 심어 16번째 모습 출력
+                    finalBananaShowcase.style.backgroundImage = `url('${getSkinImageUrl(currentSkinNumber)}')`;
+
                     setTimeout(() => { clearScreen.style.display = 'flex'; }, 300);
                     return;
                 }
@@ -572,11 +567,7 @@
 
         function handleRewardUnlock() {
             let lockedList = [];
-            for (let i = 2; i <= 10; i++) {
-                if (!unlockedSkins[i]) {
-                    lockedList.push(i);
-                }
-            }
+            for (let i = 2; i <= 10; i++) { if (!unlockedSkins[i]) { lockedList.push(i); } }
 
             if (lockedList.length > 0) {
                 const randomIndex = Math.floor(Math.random() * lockedList.length);
@@ -599,7 +590,7 @@
             updateBananaSprite();
         }
 
-        // 초기 바인딩
+        // 초기 빌드업
         bananaView.style.backgroundImage = `url('${getSkinImageUrl(1)}')`;
         initBook();
         updateBananaSprite();
