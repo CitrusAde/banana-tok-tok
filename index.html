@@ -33,7 +33,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* 9:16 모바일 세로형 화면 최적화 & 예쁜 2D 캐주얼 해변 배경 */
         #game-container {
             position: relative;
             width: 100vw;
@@ -41,9 +40,9 @@
             max-width: 450px;
             max-height: 850px;
             background: linear-gradient(to bottom, 
-                #7dd3fc 0%, #7dd3fc 45%,   /* 화창한 하늘 */
-                #22d3ee 45%, #0891b2 65%,  /* 에메랄드 빛 맑은 바다 */
-                #fef08a 65%, #facc15 100%  /* 따뜻한 노란 모래사장 */
+                #7dd3fc 0%, #7dd3fc 45%,   
+                #22d3ee 45%, #0891b2 65%,  
+                #fef08a 65%, #facc15 100%  
             );
             box-shadow: 0 12px 40px rgba(0,0,0,0.4);
             display: flex;
@@ -63,7 +62,6 @@
             }
         }
 
-        /* ☁️ 배경 데코레이션 */
         .bg-cloud {
             position: absolute;
             font-size: 3rem;
@@ -75,7 +73,6 @@
         }
         .cloud-2 { top: 28%; animation-duration: 22s; animation-delay: -5s; font-size: 2.2rem; opacity: 0.6; }
 
-        /* 🌊 백사장 거품 파도 */
         #game-container::before {
             content: '';
             position: absolute;
@@ -88,7 +85,6 @@
             z-index: 1;
         }
 
-        /* 🌴 야자수 */
         .bg-palm {
             position: absolute;
             font-size: 5.5rem;
@@ -101,7 +97,6 @@
         }
         .palm-right { left: auto; right: -25px; font-size: 6.5rem; bottom: 22%; transform: scaleX(-1); }
 
-        /* 상단 UI */
         #header { text-align: center; z-index: 2; pointer-events: auto; }
         h1 {
             font-family: 'Jua', sans-serif;
@@ -138,7 +133,6 @@
             display: inline-block;
         }
 
-        /* 🎯 메인 바나나 스테이지 (크기 성장 애니메이션을 위한 트랜지션 추가) */
         #banana-stage {
             width: 250px;
             height: 250px;
@@ -148,7 +142,6 @@
             z-index: 2;
             filter: drop-shadow(0px 10px 0px rgba(0,0,0,0.12));
             pointer-events: none;
-            /* 기본 스케일 값은 스크립트에서 실시간 제어, 크기 변환 시 0.2초간 부드럽게 변함 */
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
@@ -184,7 +177,6 @@
             animation: explode 0.6s ease-out forwards;
         }
 
-        /* 버튼 스타일 */
         .casual-btn {
             font-family: 'Jua', sans-serif;
             padding: 14px 45px;
@@ -224,19 +216,17 @@
             text-shadow: 3px 4px 0px #d84315, 6px 10px 15px rgba(0,0,0,0.2);
         }
 
-        /* 성공(클리어) 화면 내부 레이아웃 */
         #clear-screen { display: none; }
         #clear-screen h2 { font-family: 'Jua', sans-serif; font-size: 3.5rem; color: #ffeb3b; text-shadow: 2px 3px 0px #e91e63; margin-bottom: 5px; }
         
-        /* 🍌 클리어창 전용 바나나 최종 진열대 스타일 */
         #final-banana-showcase {
             width: 180px;
             height: 180px;
             margin-bottom: 15px;
             filter: drop-shadow(0px 8px 0px rgba(0,0,0,0.15));
-            background-size: 720px 720px; /* 결과창에 맞게 축소 (180px * 4 = 720px) */
+            background-size: 720px 720px; 
             background-repeat: no-repeat;
-            background-position: -540px -540px; /* 무조건 16번째 프레임 고정 고시 (마지막 행, 마지막 열) */
+            background-position: -540px -540px; 
         }
 
         #reward-msg {
@@ -338,7 +328,6 @@
         <!-- 게임 클리어 화면 -->
         <div id="clear-screen" class="overlay-screen">
             <h2>성공! 🎉</h2>
-            <!-- 🍌 완성된 마지막 이미지가 들어갈 공간 -->
             <div id="final-banana-showcase"></div>
             <div id="reward-msg">도감 획득!</div>
             <button class="casual-btn btn-orange" ontouchstart="resetGame(event)" onclick="resetGame(event)">다시 하기</button>
@@ -445,24 +434,20 @@
             currentSkinNumber = skinNum;
             bananaView.style.backgroundImage = `url('${getSkinImageUrl(skinNum)}')`;
             initBook();
-            updateBananaSprite(); // 스킨 바꿨을 때 크기 수치도 재정렬하기 위함
+            updateBananaSprite(); 
         }
 
-        // 📈 프레임에 맞춰 실시간으로 크기 비율(70% -> 120%)을 연산해 처리하는 스크립트
         function updateBananaSprite() {
             const idx = currentFrame - 1;
             const col = idx % 4;
             const row = Math.floor(idx / 4);
             bananaView.style.backgroundPosition = `${-(col * 250)}px ${-(row * 250)}px`;
 
-            // 선형 보간 계산: 1프레임일 때 0.7, 16프레임일 때 1.2
-            // 공식: 최소값 + (현재단계 / 총단계) * 범위
-            const progress = idx / (maxFrames - 1); // 0.0 ~ 1.0
-            const currentScale = 0.7 + (progress * 0.5); // 0.7 ~ 1.2
+            const progress = idx / (maxFrames - 1); 
+            const currentScale = 0.7 + (progress * 0.5); 
 
-            // 해당 스케일을 스테이지 기본 스타일에 박아넣음
             bananaStage.style.transform = `scale(${currentScale})`;
-            bananaStage.dataset.baseScale = currentScale; // 터치 임시 액션용 캐시 데이터 저장
+            bananaStage.dataset.baseScale = currentScale; 
         }
 
         function startGame(event) { 
@@ -534,12 +519,9 @@
 
             createParticles(relX, relY);
 
-            // 터치 액션 맛을 위해 현재 기본 스케일의 85% 수준으로 순간 수축 피드백
             const baseScale = parseFloat(bananaStage.dataset.baseScale) || 1.0;
             bananaStage.style.transform = `scale(${baseScale * 0.88})`;
-            setTimeout(() => { 
-                bananaStage.style.transform = `scale(${baseScale})`; 
-            }, 60);
+            setTimeout(() => {  bananaStage.style.transform = `scale(${baseScale})`; }, 60);
 
             if (currentFrame > maxFrames) return;
             touchCount++;
@@ -554,7 +536,6 @@
                     handleRewardUnlock();
                     comboPanel.className = '';
                     
-                    // 🍌 성공 창 중앙 레이어에 선택되어 있던 스킨의 이미지 링크를 심어 16번째 모습 출력
                     finalBananaShowcase.style.backgroundImage = `url('${getSkinImageUrl(currentSkinNumber)}')`;
 
                     setTimeout(() => { clearScreen.style.display = 'flex'; }, 300);
@@ -580,17 +561,38 @@
             initBook();
         }
 
+        // 🎲 [핵심 로직 변경] 다시 하기 실행 시 해금된 스킨 중 하나를 램덤으로 세팅하는 함수
         function resetGame(event) {
             event.stopPropagation();
             event.preventDefault();
-            currentFrame = 1; touchCount = 0; comboCount = 0;
+            
+            currentFrame = 1; 
+            touchCount = 0; 
+            comboCount = 0;
             touchLeftText.innerText = touchesPerFrame;
             clearScreen.style.display = 'none';
             comboPanel.className = '';
+
+            // 1. 현재까지 열려있는(true) 스킨 번호들만 모아서 배열 생성
+            let availableSkins = [];
+            for (let i = 1; i <= 10; i++) {
+                if (unlockedSkins[i]) {
+                    availableSkins.push(i);
+                }
+            }
+
+            // 2. 모인 해금 스킨 후보들 중에서 무작위로 하나 초이스
+            const randomIdx = Math.floor(Math.random() * availableSkins.length);
+            currentSkinNumber = availableSkins[randomIdx];
+
+            // 3. 인게임 바나나 뷰의 배경 이미지를 선택된 랜덤 스킨으로 변경
+            bananaView.style.backgroundImage = `url('${getSkinImageUrl(currentSkinNumber)}')`;
+
+            // 4. 스킨 데이터가 바뀌었으니 도감 및 스프라이트 크기 갱신
+            initBook();
             updateBananaSprite();
         }
 
-        // 초기 빌드업
         bananaView.style.backgroundImage = `url('${getSkinImageUrl(1)}')`;
         initBook();
         updateBananaSprite();
