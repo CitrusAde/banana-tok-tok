@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-    <title>바나나 톡톡 (Banana Tok Tok)</title>
+    <title>바나나 톡톡 (Banana Tok Tok) - 쌈뽕한 네온 에디션</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@400;700&family=Jua&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Jua&display=swap" rel="stylesheet">
 
     <style>
-        /* 모바일 전체 화면 드래그 및 터치 하이라이트 방지 */
         html, body {
             position: fixed;
             width: 100%;
             height: 100%;
             overflow: hidden;
-            touch-action: none; /* 브라우저 기본 스크롤 및 제스처 완전히 차단 */
+            touch-action: none;
             -webkit-overflow-scrolling: touch;
         }
 
         body {
             margin: 0;
             padding: 0;
-            background: #2c3e50;
+            background: #0b0f19; /* 깊고 트렌디한 다크 블루 블랙 */
             font-family: 'Jua', sans-serif;
             display: flex;
             justify-content: center;
@@ -31,84 +30,117 @@
             height: 100vh;
             -webkit-user-select: none;
             user-select: none;
-            -webkit-tap-highlight-color: transparent; /* 모바일 터치 시 푸른 박스 생기는 현상 제거 */
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* 9:16 모바일 꽉 찬 세로형 화면 최적화 */
+        /* 9:16 모바일 꽉 찬 화면 & 쌈뽕한 네온 사이버 해변 배경 */
         #game-container {
             position: relative;
             width: 100vw;
-            height: 100vh; /* 모바일 브라우저 주소창 고려해 세로 꽉 차게 변경 */
+            height: 100vh;
             max-width: 450px;
             max-height: 850px;
-            background: linear-gradient(to bottom, #4fc3f7 0%, #4fc3f7 50%, #00acc1 50%, #00acc1 70%, #fdd835 70%, #ffb300 100%);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-            border-radius: 0px; /* 모바일 꽉 찬 화면을 위해 테두리 선 정돈 */
+            /* 사이버 펑크 스타일의 강렬한 네온 그라데이션 바다와 석양 연출 */
+            background: linear-gradient(to bottom, 
+                #1f1c2c 0%, #928dab 40%,    /* 어두운 새벽 밤하늘 */
+                #ff007f 40%, #ff5e62 65%,   /* 강렬한 핫핑크 석양 */
+                #ff9966 65%, #ff5e62 80%,   /* 불타는 주황빛 네온 바다 */
+                #0f2027 80%, #203a43 100%   /* 차가운 다크 크롬 해변 */
+            );
+            box-shadow: 0 20px 60px rgba(255, 0, 127, 0.3);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 20px 30px 20px;
+            padding: 40px 20px 40px 20px;
             box-sizing: border-box;
             overflow: hidden;
         }
 
-        /* 스마트폰 화면이 가로로 넓어질 때를 위한 예외 처리(태블릿/PC) */
         @media (min-width: 450px) {
             #game-container {
                 height: 177.78vw;
-                border: 8px solid #fff;
-                border-radius: 24px;
+                border: 4px solid #ff007f; /* 네온 핑크 테두리 */
+                border-radius: 32px;
+                box-shadow: 0 0 30px #ff007f, inset 0 0 20px rgba(255,0,127,0.5);
             }
         }
 
-        #game-container::before { content: '🌴'; position: absolute; font-size: 5rem; bottom: 25%; left: -10px; opacity: 0.8; pointer-events: none; }
-        #game-container::after { content: '🌴'; position: absolute; font-size: 6rem; bottom: 22%; right: -20px; opacity: 0.8; transform: scaleX(-1); pointer-events: none; }
+        /* 사이버 야자수 실루엣 장식 */
+        #game-container::before { content: '🌴'; position: absolute; font-size: 5.5rem; bottom: 23%; left: -15px; opacity: 0.3; filter: drop-shadow(0 0 10px #00ffff); pointer-events: none; }
+        #game-container::after { content: '🌴'; position: absolute; font-size: 6.5rem; bottom: 19%; right: -25px; opacity: 0.3; filter: drop-shadow(0 0 10px #00ffff); transform: scaleX(-1); pointer-events: none; }
 
         #header { text-align: center; z-index: 2; pointer-events: auto; }
+        
+        /* 쌈뽕함의 정점: Black Han Sans 폰트 + 강렬한 듀얼 네온 텍스트 */
         h1 {
-            font-family: 'Jua', sans-serif;
-            color: #ffeb3b;
-            font-size: 3.4rem;
-            margin: 0 0 5px 0;
-            text-shadow: 2px 3px 0px #e65100, 4px 6px 10px rgba(0,0,0,0.15);
+            font-family: 'Black Han Sans', sans-serif;
+            color: #fff;
+            font-size: 3.8rem;
+            margin: 0 0 10px 0;
+            letter-spacing: -2px;
+            text-shadow: 
+                0 0 10px #ff007f,
+                0 0 20px #ff007f,
+                0 0 40px #ff007f;
+            animation: neonGlow 1.5s infinite alternate;
         }
-        #info-panel {
-            background: #ffffff;
-            border: 4px solid #ff9800;
-            padding: 6px 20px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            color: #5d4037;
-            box-shadow: 0 6px 0px rgba(0,0,0,0.1);
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-        #touch-left { color: #e91e63; font-size: 1.4rem; }
 
+        /* 메카닉 일렉트릭 스타일의 상단 정보 패널 */
+        #info-panel {
+            background: rgba(11, 15, 25, 0.85);
+            border: 3px solid #00ffff;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 8px 25px;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+        #touch-left { 
+            color: #ff007f; 
+            font-size: 1.5rem; 
+            font-weight: bold;
+            text-shadow: 0 0 10px #ff007f;
+        }
+
+        /* 사이버 펑크 네온 버튼 스타일 */
         #book-open-btn {
             font-family: 'Jua', sans-serif;
-            background: #ff5722;
-            color: white;
-            border: 2px solid #fff;
-            border-radius: 20px;
-            padding: 8px 22px;
+            background: transparent;
+            color: #ff007f;
+            border: 2px solid #ff007f;
+            border-radius: 12px;
+            padding: 8px 24px;
             font-size: 1.1rem;
             cursor: pointer;
-            box-shadow: 0 4px 0px #d84315;
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
             display: inline-block;
+            transition: all 0.2s;
+        }
+        #book-open-btn:active {
+            background: #ff007f;
+            color: #fff;
+            box-shadow: 0 0 20px #ff007f;
+            transform: scale(0.95);
         }
 
+        /* 바나나 메인 스테이지 홀로그램 후광 레이어 */
         #banana-stage {
-            width: 250px;
-            height: 250px;
+            width: 270px;
+            height: 270px;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1;
-            filter: drop-shadow(0px 10px 0px rgba(0,0,0,0.12));
+            /* 바나나 뒤에 쌈뽕한 후광 오라(Aura) 배치 */
+            background: radial-gradient(circle, rgba(0,255,255,0.2) 0%, rgba(0,0,0,0) 70%);
+            filter: drop-shadow(0px 0px 15px rgba(0,255,255,0.3));
             pointer-events: none;
-            transition: transform 0.05s ease-out; /* 터치 피드백 애니메이션 속도 최적화 */
+            transition: transform 0.05s ease-out;
         }
 
         #banana-view {
@@ -119,29 +151,49 @@
             background-position: 0px 0px;
         }
 
-        #footer-text { font-family: 'Jua', sans-serif; font-size: 1.3rem; height: 20px; z-index: 2; color: #795548; pointer-events: none; }
-
-        .casual-btn {
-            font-family: 'Jua', sans-serif;
-            padding: 14px 45px;
-            font-size: 1.6rem;
-            color: white;
-            border: 4px solid #fff;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 8px 0px #388e3c, 0 15px 10px rgba(0,0,0,0.3);
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
-            pointer-events: auto;
+        #footer-text { 
+            font-family: 'Black Han Sans', sans-serif; 
+            font-size: 1.4rem; 
+            height: 20px; 
+            z-index: 2; 
+            color: #00ffff; 
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px #00ffff;
+            pointer-events: none; 
         }
-        .btn-green { background: #4caf50; box-shadow: 0 8px 0px #2e7d32; }
-        .btn-orange { background: #ff9800; box-shadow: 0 8px 0px #ef6c00; }
 
+        /* 묵직하고 거대한 아케이드 오락기 스타일 버튼 */
+        .casual-btn {
+            font-family: 'Black Han Sans', sans-serif;
+            padding: 16px 50px;
+            font-size: 1.8rem;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            pointer-events: auto;
+            transition: transform 0.1s;
+        }
+        .casual-btn:active { transform: scale(0.95); }
+        
+        .btn-green { 
+            background: linear-gradient(135deg, #00ff87 0%, #60efff 100%); 
+            color: #0b0f19;
+            box-shadow: 0 0 25px rgba(0, 255, 135, 0.6);
+        }
+        .btn-orange { 
+            background: linear-gradient(135deg, #ff007f 0%, #ff5e62 100%); 
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.6);
+        }
+
+        /* 오버레이 화면 전반을 힙한 글래스모피즘(Glassmorphism)으로 체인지 */
         .overlay-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px); /* iOS 사파리 대응 */
+            background: rgba(11, 15, 25, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -151,51 +203,71 @@
         }
 
         .start-title {
-            font-family: 'Jua', sans-serif;
-            font-size: 4.2rem;
-            color: #fffde7;
+            font-family: 'Black Han Sans', sans-serif;
+            font-size: 4.8rem;
+            color: #fff;
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             line-height: 1.1;
-            text-shadow: 3px 4px 0px #d84315, 6px 10px 15px rgba(0,0,0,0.2);
+            letter-spacing: -2px;
+            text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
+            animation: neonGlowCyan 1.5s infinite alternate;
         }
 
         #clear-screen { display: none; }
-        #clear-screen h2 { font-family: 'Jua', sans-serif; font-size: 3.5rem; color: #ffeb3b; text-shadow: 2px 3px 0px #e91e63; margin-bottom: 5px; }
+        #clear-screen h2 { 
+            font-family: 'Black Han Sans', sans-serif; 
+            font-size: 4rem; 
+            color: #fff; 
+            text-shadow: 0 0 20px #00ff87; 
+            margin-bottom: 15px; 
+        }
+        
+        /* 스케일 보드를 감싸는 하이테크 리워드 박스 */
         #reward-msg {
             font-family: 'Jua', sans-serif;
-            color: #fffde7;
+            color: #fff;
             font-size: 1.4rem;
             text-align: center;
-            margin-bottom: 25px;
-            background: linear-gradient(135deg, #ff9800, #e91e63);
-            padding: 10px 20px;
-            border-radius: 24px;
-            border: 3px solid #fff;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            margin-bottom: 35px;
+            background: rgba(255, 0, 127, 0.15);
+            padding: 12px 24px;
+            border-radius: 16px;
+            border: 2px solid #ff007f;
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
         }
 
-        #book-screen { display: none; background: rgba(44, 62, 80, 0.95); padding: 20px; box-sizing: border-box; }
-        .book-title { font-family: 'Jua', sans-serif; font-size: 2.5rem; color: #ffeb3b; margin-bottom: 15px; text-shadow: 2px 2px 0px #e65100; }
+        /* 도감 창 다크 아케이드 테마 */
+        #book-screen { display: none; background: rgba(11, 15, 25, 0.96); padding: 25px; box-sizing: border-box; }
+        .book-title { 
+            font-family: 'Black Han Sans', sans-serif; 
+            font-size: 2.8rem; 
+            color: #fff; 
+            margin-bottom: 20px; 
+            text-shadow: 0 0 15px #ff007f; 
+        }
         
+        /* 4x4 네온 슬롯 그리드 */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            gap: 10px;
             width: 100%;
             max-width: 380px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 12px;
-            border-radius: 16px;
-            border: 3px solid #ff9800;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 20px;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
             box-sizing: border-box;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
+        /* 힙한 블랙 크롬 카드 레이아웃 */
         .skin-item {
-            background: #fff;
-            border: 3px solid #bdc3c7;
-            border-radius: 12px;
+            background: #161d2f;
+            border: 2px solid #2c374e;
+            border-radius: 14px;
             aspect-ratio: 1;
             display: flex;
             flex-direction: column;
@@ -203,22 +275,37 @@
             align-items: center;
             cursor: pointer;
             position: relative;
-            box-shadow: 0 4px 0px #bdc3c7;
-            overflow: hidden;
+            transition: all 0.2s;
         }
-        .skin-item.active { border-color: #ff9800; background: #fffde7; box-shadow: 0 4px 0px #e65100; }
+        /* 장착(활성화) 시 시안(민트) 네온 빛 발산 */
+        .skin-item.active { 
+            border-color: #00ffff; 
+            background: #1a2f3b; 
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6); 
+        }
         
-        .skin-item.locked { background: #95a5a6; border-color: #7f8c8d; box-shadow: 0 4px 0px #7f8c8d; cursor: not-allowed; }
-        .skin-item.locked .skin-preview { filter: brightness(0.3) contrast(0.5); }
-        .skin-item.locked::after { content: '🔒'; position: absolute; font-size: 1.2rem; top: 25%; }
+        .skin-item.locked { background: #0f131c; border-color: #1e2535; cursor: not-allowed; }
+        .skin-item.locked .skin-preview { filter: brightness(0.2) grayscale(1); }
+        .skin-item.locked::after { content: '🔒'; position: absolute; font-size: 1.1rem; top: 25%; filter: drop-shadow(0 0 5px #fff); }
 
-        .skin-item.coming-soon { background: #555; border-color: #333; box-shadow: 0 4px 0px #333; cursor: not-allowed; }
+        .skin-item.coming-soon { background: #090b10; border-color: #ff007f; cursor: not-allowed; opacity: 0.6; }
         .skin-item.coming-soon .skin-preview { display: none; }
-        .skin-item.coming-soon::after { content: '❌'; position: absolute; font-size: 1.2rem; top: 20%; }
-        .skin-item.coming-soon .skin-name { color: #aaa !important; font-size: 1rem; }
+        .skin-item.coming-soon::after { content: '❌'; position: absolute; font-size: 1.1rem; top: 22%; }
+        .skin-item.coming-soon .skin-name { color: #ff007f !important; font-size: 0.95rem; }
 
         .skin-preview { width: 45px; height: 45px; background-size: 180px 180px; background-repeat: no-repeat; background-position: 0px 0px; }
-        .skin-name { font-family: 'Dongle', sans-serif; font-size: 1.1rem; font-weight: bold; line-height: 0.8; color: #5d4037; margin-top: 4px; }
+        .skin-name { font-family: 'Dongle', sans-serif; font-size: 1.1rem; font-weight: bold; line-height: 0.8; color: #8fa0c4; margin-top: 5px; }
+        .skin-item.active .skin-name { color: #00ffff; }
+
+        /* 쌈뽕한 무한 네온 애니메이션 광원 정의 */
+        @keyframes neonGlow {
+            from { text-shadow: 0 0 5px #ff007f, 0 0 10px #ff007f, 0 0 20px #ff007f; }
+            to { text-shadow: 0 0 10px #ff007f, 0 0 20px #ff007f, 0 0 40px #ff007f, 0 0 60px #ff007f; }
+        }
+        @keyframes neonGlowCyan {
+            from { text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff; }
+            to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff; }
+        }
     </style>
 </head>
 <body>
@@ -226,33 +313,33 @@
     <div id="game-container" ontouchstart="handleGlobalTouch(event)" onmousedown="handleGlobalTouch(event)">
         
         <div id="start-screen" class="overlay-screen">
-            <div class="start-title">바나나<br>톡톡!</div>
-            <button class="casual-btn btn-green" ontouchstart="startGame(event)" onclick="startGame(event)">게임 시작</button>
+            <div class="start-title">바나나<br>톡톡</div>
+            <button class="casual-btn btn-green" ontouchstart="startGame(event)" onclick="startGame(event)">GAME START</button>
         </div>
 
         <div id="header">
             <h1>바나나 톡톡</h1>
-            <div id="info-panel">다음 변신까지 <span id="touch-left">2</span>톡!</div>
+            <div id="info-panel">NEXT STEP : <span id="touch-left">2</span> TOK!</div>
             <br>
-            <button id="book-open-btn" ontouchstart="openBook(event)" onclick="openBook(event)">📖 바나나 도감</button>
+            <button id="book-open-btn" ontouchstart="openBook(event)" onclick="openBook(event)">📖 BARANANA BOOK</button>
         </div>
 
         <div id="banana-stage">
             <div id="banana-view"></div>
         </div>
 
-        <div id="footer-text">아무 데나 톡톡!</div>
+        <div id="footer-text">ANYWHERE TAP</div>
 
         <div id="clear-screen" class="overlay-screen">
-            <h2>성공! 🎉</h2>
+            <h2>STAGE CLEAR 🎉</h2>
             <div id="reward-msg">도감 획득!</div>
-            <button class="casual-btn btn-orange" ontouchstart="resetGame(event)" onclick="resetGame(event)">다시 하기</button>
+            <button class="casual-btn btn-orange" ontouchstart="resetGame(event)" onclick="resetGame(event)">PLAY AGAIN</button>
         </div>
 
         <div id="book-screen" class="overlay-screen">
-            <div class="book-title">바나나 도감 📖</div>
+            <div class="book-title">BANANA BOOK 📖</div>
             <div class="grid-container" id="skin-grid"></div>
-            <button class="casual-btn btn-green" style="font-size: 1.3rem; padding: 8px 30px;" ontouchstart="closeBook(event)" onclick="closeBook(event)">닫기</button>
+            <button class="casual-btn btn-green" style="font-size: 1.3rem; padding: 12px 40px; border-radius: 12px;" ontouchstart="closeBook(event)" onclick="closeBook(event)">CLOSE</button>
         </div>
     </div>
 
@@ -262,9 +349,9 @@
         const maxFrames = 16;
         const touchesPerFrame = 2;
         let currentSkinNumber = 1;
-        let isProcessingTouch = false; // 모바일 터치 중복 방지 플래그
+        let isProcessingTouch = false;
 
-        // 💡 이 아래 따옴표 안에 Base64 데이터를 채워 넣으시면 됩니다!
+        // 여기에 변환된 Base64 데이터를 채워 넣으시면 완벽하게 1개 파일로 압축 공유됩니다!
         const skinImages = {
             1: 'banana_4x4_1.png',
             2: 'banana_4x4_2.png',
@@ -307,7 +394,7 @@
                     
                     const name = document.createElement('div');
                     name.className = 'skin-name';
-                    name.innerText = `업데이트 예정`;
+                    name.innerText = `NEXT SKIN`;
                     item.appendChild(name);
                 } else {
                     if (unlockedSkins[i]) {
@@ -326,7 +413,7 @@
                     
                     const name = document.createElement('div');
                     name.className = 'skin-name';
-                    name.innerText = unlockedSkins[i] ? `스킨 ${i}` : `???`;
+                    name.innerText = unlockedSkins[i] ? `SKIN ${i}` : `???`;
 
                     item.appendChild(preview);
                     item.appendChild(name);
@@ -362,17 +449,15 @@
         function closeBook(event) { event.stopPropagation(); event.preventDefault(); bookScreen.style.display = 'none'; }
 
         function handleGlobalTouch(event) {
-            // 버튼이나 도감 아이템 터치 시 연산 무시 방어
             if (event.target.tagName === 'BUTTON' || event.target.closest('.skin-item') || (event.target.closest('#book-screen') && event.target === bookScreen)) return;
             if (startScreen.style.display !== 'none' || clearScreen.style.display === 'flex' || bookScreen.style.display === 'flex') return;
 
-            // 모바일 하이브리드 중복 이벤트(touchstart + mousedown) 처리 방지
             if (isProcessingTouch) return;
             isProcessingTouch = true;
             setTimeout(() => { isProcessingTouch = false; }, 50);
 
-            // 쫀득한 모바일 터치 스케일 모션 피드백
-            document.getElementById('banana-stage').style.transform = 'scale(0.85)';
+            // 쫀득한 연타 팝 홉 모션 피드백
+            document.getElementById('banana-stage').style.transform = 'scale(0.82)';
             setTimeout(() => { document.getElementById('banana-stage').style.transform = 'scale(1)'; }, 60);
 
             if (currentFrame > maxFrames) return;
@@ -406,7 +491,7 @@
                 const randomIndex = Math.floor(Math.random() * lockedList.length);
                 const newlyUnlockedSkin = lockedList[randomIndex];
                 unlockedSkins[newlyUnlockedSkin] = true;
-                rewardMsg.innerText = `도감 획득! [스킨 ${newlyUnlockedSkin}]이 열렸어용! 🎉`;
+                rewardMsg.innerHTML = `NEW SKIN UNLOCKED!<br><span style="color:#00ffff">[스킨 ${newlyUnlockedSkin}]</span>이 열렸어용! 🎉`;
             } else {
                 rewardMsg.innerText = `현재 오픈된 모든 스킨을 수집했습니다! 🏆`;
             }
@@ -422,7 +507,7 @@
             updateBananaSprite();
         }
 
-        // 초기 바인딩
+        // 런타임 이니셜라이즈
         bananaView.style.backgroundImage = `url('${getSkinImageUrl(1)}')`;
         initBook();
         updateBananaSprite();
